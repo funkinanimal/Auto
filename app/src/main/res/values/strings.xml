@@ -1,0 +1,32 @@
+<resources>
+    <string name="app_name">Auto</string>
+    <string name="title_activity_vehicle">VehicleActivity</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
+    <string name="action_settings">Settings</string>
+
+    <string name="CarName_ru">Имя</string>
+    <string name="CarName_en">Name</string>
+
+    <string name="CarBrand_ru">Марка</string>
+    <string name="CarBrand_en">Brand</string>
+
+    <string name="CarYear_en">Year</string>
+    <string name="CarYear_ru">Год выпуска</string>
+
+    <string name="CarPlate_en">Plates</string>
+    <string name="CarPlate_ru">Гос. номер</string>
+
+    <string name="CarComment_en">Comment</string>
+    <string name="CarComment_ru">Комментарий</string>
+
+    <string name="Lifetime_en">Lifetime</string>
+    <string name="Lifetime_ru">Срок службы</string>
+
+    <string name="Add_en">Add</string>
+    <string name="Add_ru">Добавить</string>
+
+
+</resources>
