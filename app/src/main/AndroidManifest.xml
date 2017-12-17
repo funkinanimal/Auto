@@ -38,7 +38,10 @@
             android:name=".Templates.AddTemplateActivity"
             android:screenOrientation="portrait" />
         <activity android:name=".Templates.TemplateInfo" />
-        <activity android:name=".Replacements.ReplacementActivity"></activity>
+        <activity android:name=".Replacements.ReplacementActivity" />
+        <activity android:name=".Replacements.ReplaceDecisionActivity" />
+        <activity android:name=".Replacements.AddReplacementActivity" />
+        <activity android:name=".Replacements.ReplacementInfoActivity"></activity>
     </application>
 
 </manifest>

@@ -1,4 +1,4 @@
-package com.vyaches.auto.Templates;
+package com.vyaches.auto.Replacements;
 
 import android.content.Intent;
 import android.database.Cursor;
@@ -13,31 +13,30 @@ import com.vyaches.auto.DatabaseHelper;
 import com.vyaches.auto.R;
 
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 
-public class TemplateInfo extends AppCompatActivity {
+public class ReplacementInfoActivity extends AppCompatActivity {
 
     private DatabaseHelper mDBHelper;
     private SQLiteDatabase mDb;
 
-    ListView tempList;
-    private int tId;
-
     private HashMap<String, String> item;
     private ArrayList<HashMap<String, String>> items;
+
+    private ListView repInfoList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_template_info);
+        setContentView(R.layout.activity_replacement_info);
 
-        tempList = (ListView)findViewById(R.id.templateInfoList);
+        repInfoList = (ListView)findViewById(R.id.repInfoList);
 
-        Intent goToTempInfo = getIntent();
-        tId = goToTempInfo.getIntExtra("tId", 0);
-
-        setTitle("Template info");
+        Intent extIntent = getIntent();
+        int rId = extIntent.getIntExtra("rId", 0);
 
         mDBHelper = new DatabaseHelper(this);
 
@@ -53,17 +52,33 @@ public class TemplateInfo extends AppCompatActivity {
             throw mSQLException;
         }
 
-        Cursor cursor = mDb.rawQuery("Select * from templates where _id=" + tId, null);
+        Cursor cursor = mDb.rawQuery("select * from replacementform where _id=" + rId, null);
         cursor.moveToFirst();
-        String tName = cursor.getString(1);
-        //String tLifetime = String.valueOf(cursor.getInt(2)/60); //minutes
-        String tLifetime = String.valueOf(cursor.getInt(2)/2592000); // month
-        String tComment = cursor.getString(3);
+
+        String name = cursor.getString(1);
+        String mileage = cursor.getString(4);
+        String brand = cursor.getString(6);
+
+        int not = cursor.getInt(5);
+        int lifeTimeInt = cursor.getInt(2);
+        int repDateInt = cursor.getInt(3);
+
         cursor.close();
 
-        String[] data = {tName, tLifetime, tComment};
-        String[] titles_en = {"Name", "Lifetime", "Comment"};
-        //String[] titles_ru = {"Имя", "Срок службы", "Комментарий"};
+        String changeAt = "";
+
+        String lifeTime = String.valueOf(lifeTimeInt/2592000) + " mon.";
+        String repDate = new SimpleDateFormat("dd.MM.yyyy").format(new Date(repDateInt*1000L));
+        if(not == 1){
+            int sum = (lifeTimeInt + repDateInt);
+            changeAt = new SimpleDateFormat("dd.MM.yyyy").format(new Date(sum*1000L));
+        }
+        else if(not == 0){
+            changeAt = "not defined";
+        }
+
+        String data[] = {name, brand, lifeTime, repDate, mileage, changeAt};
+        String titles_en[] = {"Name", "Brand", "Lifetime", "Date", "Mileage", "Change at"};
 
         items = new ArrayList<HashMap<String, String>>();
 
@@ -79,12 +94,6 @@ public class TemplateInfo extends AppCompatActivity {
         int[] to = {R.id.textView4, R.id.textView5};
 
         SimpleAdapter adapter = new SimpleAdapter(this, items, R.layout.info_item_adapter, from, to);
-        tempList.setAdapter(adapter);
-    }
-
-    @Override
-    public void onBackPressed(){
-        super.onBackPressed();
-        finish();
+        repInfoList.setAdapter(adapter);
     }
 }

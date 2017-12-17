@@ -4,8 +4,12 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
 
@@ -13,7 +17,10 @@ import com.vyaches.auto.DatabaseHelper;
 import com.vyaches.auto.R;
 
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 
 public class ReplacementActivity extends AppCompatActivity {
@@ -26,32 +33,34 @@ public class ReplacementActivity extends AppCompatActivity {
 
     private ArrayList<HashMap<String, String>> replacements;
     private HashMap<String, String> replacement;
-    private ArrayList<String> names;
     private ArrayList<Integer> ids;
     private SimpleAdapter repAdapter;
+
 
     private void refresh(){
         replacements = new ArrayList<HashMap<String, String>>();
         ids = new ArrayList<Integer>();
 
-        Cursor cursor = mDb.rawQuery("Select * from replacements where _id=" + vId, null);
+        Cursor cursor = mDb.rawQuery("Select * from replacementform where vehicle_id=" + vId, null);
         cursor.moveToLast();
+
 
         while(!cursor.isBeforeFirst()){
             replacement = new HashMap<String, String>();
+            int time = cursor.getInt(3);
+            String repdate = new SimpleDateFormat("dd.MM.yyyy").format(new Date(time*1000L));
 
-            String repdate = new java.text.SimpleDateFormat("dd/MM/yyyy").format(new java.util.Date(cursor.getInt(3)*1000));
             replacement.put("name", cursor.getString(1));
             replacement.put("repdate", repdate);
             replacements.add(replacement);
 
-            ids.add(cursor.getInt(0));
+            ids.add(cursor.getInt(7));
 
             cursor.moveToPrevious();
         }
         cursor.close();
 
-        String[] from = {"name", "brand"};
+        String[] from = {"name", "repdate"};
         int[] to = {R.id.textView, R.id.textView2};
 
         repAdapter = new SimpleAdapter(this, replacements, R.layout.adapter_item, from, to);
@@ -83,6 +92,26 @@ public class ReplacementActivity extends AppCompatActivity {
             throw mSQLException;
         }
 
+
+        FloatingActionButton replacementFab = (FloatingActionButton)findViewById(R.id.replacementFab);
+
+        replacementFab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(ReplacementActivity.this, ReplaceDecisionActivity.class);
+                intent.putExtra("vId", vId);
+                startActivity(intent);
+            }
+        });
+
+        replacementList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
+                Intent infoIntent = new Intent(ReplacementActivity.this, ReplacementInfoActivity.class);
+                infoIntent.putExtra("rId", ids.get(position));
+                startActivity(infoIntent);
+            }
+        });
 
     }
 

@@ -1,10 +1,13 @@
 package com.vyaches.auto.Templates;
 
+import android.app.Notification;
+import android.app.NotificationManager;
 import android.content.ContentValues;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.NotificationCompat;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -59,14 +62,13 @@ public class AddTemplateActivity extends AppCompatActivity {
                     Toast.makeText(getApplicationContext(), "Заполните необходимые поля", Toast.LENGTH_SHORT).show();
                 else{
                     int lt = Integer.parseInt(tLifetime);
-                    //int mLifetime = lt * 2628000; // месяцы
-                    int mLifetime = lt * 60; // минуты
+                    int mLifetime = lt * 2592000; // месяцы
+                    //int mLifetime = lt * 60; // минуты
 
                     ContentValues values = new ContentValues();
                     values.put("name", tName);
                     values.put("lifetime", mLifetime);
                     values.put("comment", tComment);
-
                     mDb.insert("templates", null, values);
                     finish();
                 }

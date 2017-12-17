@@ -13,6 +13,8 @@
     <string name="CarBrand_ru">Марка</string>
     <string name="CarBrand_en">Brand</string>
 
+    <string name="detailBrand_ru">Производитель</string>
+
     <string name="CarYear_en">Year</string>
     <string name="CarYear_ru">Год выпуска</string>
 
@@ -28,5 +30,6 @@
     <string name="Add_en">Add</string>
     <string name="Add_ru">Добавить</string>
 
-
+    <string name="date_en">Date</string>
+    <string name="date_ru">Дата</string>
 </resources>

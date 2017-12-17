@@ -71,10 +71,6 @@ public class MainActivity extends AppCompatActivity {
         listView = (ListView)findViewById(R.id.listView);
 
         mDBHelper = new DatabaseHelper(this);
-        /*final ArrayList<Integer> ids = new ArrayList<Integer>();
-        ArrayList<HashMap<String, String>> vehicles = new ArrayList<HashMap<String, String>>();
-        HashMap<String, String> vehicle;// = new HashMap<String, String>();
-        final ArrayList<String> names = new ArrayList<String>();*/
 
         try {
             mDBHelper.updateDataBase();
@@ -88,9 +84,6 @@ public class MainActivity extends AppCompatActivity {
             throw mSQLException;
         }
 
-
-
-        //refresh();
 
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
